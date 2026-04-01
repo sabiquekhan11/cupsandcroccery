@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>multitasker</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+* {
+  scroll-behavior: smooth;
+}
+body{
+  margin:0;
+  font-family:'Poppins', Arial, sans-serif;
+  background: #000000;
+  background-attachment: fixed;
+  color:#ffffff;
+  text-align:center;
+  transition:0.5s ease;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.7) 50%, rgba(255, 0, 0, 0.2) 100%);
+  pointer-events: none;
+  z-index: -1;
+  animation: gradientShift 8s ease-in-out infinite;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(255, 0, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 0, 0, 0.08) 0%, transparent 50%),
+    linear-gradient(90deg, transparent 0%, rgba(255, 0, 0, 0.2) 50%, transparent 100%) 0% 20% / 250px 4px no-repeat,
+    linear-gradient(90deg, transparent 0%, rgba(255, 0, 0, 0.2) 50%, transparent 100%) 0% 40% / 200px 4px no-repeat,
+    linear-gradient(90deg, transparent 0%, rgba(255, 0, 0, 0.2) 50%, transparent 100%) 0% 60% / 220px 4px no-repeat,
+    linear-gradient(90deg, transparent 0%, rgba(255, 0, 0, 0.2) 50%, transparent 100%) 0% 80% / 180px 4px no-repeat,
+    radial-gradient(ellipse 60px 30px at 10% 10%, rgba(255, 0, 0, 0.15) 0%, transparent 70%) 0% 0% / 60px 30px no-repeat,
+    radial-gradient(ellipse 40px 50px at 90% 90%, rgba(255, 0, 0, 0.15) 0%, transparent 70%) 0% 0% / 40px 50px no-repeat;
+  pointer-events: none;
+  z-index: -1;
+  animation: floatParticles 12s ease-in-out infinite, moveLines 15s linear infinite, moveShapes 20s ease-in-out infinite;
+}
+
+.light{
+  background: #ffffff;
+  color:#000000;
+}
+
+.light::before {
+  background: linear-gradient(135deg, rgba(255, 0, 0, 0.05) 0%, rgba(255, 255, 255, 0.9) 100%);
+}
+
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.box{
+  background: #1a1a1a;
+  padding:30px;
+  margin:0;
+  border-radius:12px;
+  box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+  border: 2px solid #ff0000;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  position: relative;
+  overflow: hidden;
+}
+
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent);
+  transition: left 0.4s;
+}
+
+.box:hover::before {
+  left: 100%;
+}
+
+.box.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.box:nth-child(1) { animation-delay: 0.1s; }
+.box:nth-child(2) { animation-delay: 0.2s; }
+.box:nth-child(3) { animation-delay: 0.3s; }
+.box:nth-child(4) { animation-delay: 0.4s; }
+.box:nth-child(5) { animation-delay: 0.5s; }
+.box:nth-child(6) { animation-delay: 0.6s; }
+.box:nth-child(7) { animation-delay: 0.7s; }
+.box:nth-child(8) { animation-delay: 0.8s; }
+.box:nth-child(9) { animation-delay: 0.9s; }
+.box:nth-child(10) { animation-delay: 1.0s; }
+
+.box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(255, 0, 0, 0.4);
+  border-color: #ff4444;
+}
+
+.light .box{
+  background: #f8f8f8;
+  color: #000000;
+  border: 2px solid #cc0000;
+  box-shadow: 0 4px 20px rgba(204, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #ff0000;
+  animation: slideInDown 1s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff0000, #cc0000);
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: underline 2s ease-out 1s forwards;
+}
+
+h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #ff4444;
+  position: relative;
+  display: inline-block;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #ff4444;
+  transition: width 0.3s ease;
+}
+
+.box:hover h2::after {
+  width: 100%;
+}
+
+button,input,select,textarea{
+  padding:12px 20px;
+  margin:8px;
+  border:none;
+  border-radius:10px;
+  font-size:16px;
+  font-family: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255,255,255,0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+button:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+button{
+  background: linear-gradient(45deg, #ff0000, #cc0000);
+  color:white;
+  cursor:pointer;
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+  border: none;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.5);
+}
+
+input, select, textarea {
+  background: #333333;
+  color: #ffffff;
+  border: 1px solid #ff0000;
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: #ff4444;
+  box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.light input, .light select, .light textarea {
+  background: #ffffff;
+  color: #000000;
+  border: 1px solid #cc0000;
+}
+
+iframe{
+  width:100%;
+  height:300px;
+  border:none;
+  border-radius:12px;
+  transition: transform 0.3s ease;
+}
+
+iframe:hover {
+  transform: scale(1.02);
+}
+
+#clock{
+  font-size:2rem;
+  margin:10px;
+  font-weight: 600;
+  color: #ff0000;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes underline {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes gradientShift {
+  0%, 100% {
+    background: linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.8) 50%, rgba(255, 0, 0, 0.1) 100%);
+  }
+  50% {
+    background: linear-gradient(225deg, rgba(255, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(255, 0, 0, 0.2) 100%);
+  }
+}
+
+@keyframes moveShapes {
+  0% {
+    background-position: -200px 20%, -150px 40%, -180px 60%, -120px 80%, -50px 10%, -30px 90%;
+  }
+  50% {
+    background-position: 50vw 20%, 50vw 40%, 50vw 60%, 50vw 80%, 50vw 10%, 50vw 90%;
+  }
+  100% {
+    background-position: 100vw 20%, 100vw 40%, 100vw 60%, 100vw 80%, 100vw 10%, 100vw 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>MULTI TASKER</h1>
+
+<button onclick="toggleTheme()">🌙 Toggle Theme</button>
+
+<!-- CLOCK -->
+<div class="box">
+<h2>🕒 Clock</h2>
+<div id="clock"></div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="box">
+<h2>🧮 Calculator</h2>
+<input id="num1" type="number" placeholder="Number 1">
+<input id="num2" type="number" placeholder="Number 2">
+<br>
+<button onclick="calc('+')">+</button>
+<button onclick="calc('-')">−</button>
+<button onclick="calc('*')">×</button>
+<button onclick="calc('/')">÷</button>
+<h3 id="calcResult">Result: NULL</h3>
+</div>
+
+<!-- SCIENTIFIC -->
+<div class="box">
+<h2>📐 Scientific</h2>
+<input id="sci" type="number" placeholder="Enter number">
+<br>
+<button onclick="s('sqrt')">√</button>
+<button onclick="s('square')">x²</button>
+<button onclick="s('sin')">sin</button>
+<button onclick="s('cos')">cos</button>
+<h3 id="sciResult"></h3>
+</div>
+
+<!-- CURRENCY -->
+<div class="box">
+<h2>💱 Currency Converter</h2>
+<input id="amount" type="number" placeholder="Amount">
+
+<select id="from">
+<option>USD</option><option>INR</option>
+<option>EUR</option><option>GBP</option>
+</select>
+
+to
+
+<select id="to">
+<option>INR</option><option>USD</option>
+<option>EUR</option><option>GBP</option>
+</select>
+
+<br>
+<button onclick="convert()">Convert</button>
+<h3 id="currencyResult"></h3>
+</div>
+
+<!-- UNIT CONVERTER -->
+<div class="box">
+<h2>📏 Unit Converter (km ⇄ miles)</h2>
+<input id="km" type="number" placeholder="Kilometers">
+<button onclick="toMiles()">→ Miles</button>
+<button onclick="toKm()">→ KM</button>
+<h3 id="unitResult"></h3>
+</div>
+
+<!-- WEATHER -->
+<div class="box">
+<h2>🌦 Weather</h2>
+<button onclick="getWeather()">Get Weather</button>
+<h3 id="weather"></h3>
+</div>
+
+<!-- NOTES -->
+<div class="box">
+<h2>📝 Notes</h2>
+<textarea id="note" rows="4" style="width:100%"></textarea>
+<br>
+<button onclick="saveNote()">Save</button>
+<button onclick="loadNote()">Load</button>
+</div>
+
+<!-- TODO LIST -->
+<div class="box">
+<h2>✅ To-Do List</h2>
+<input id="todoInput" type="text" placeholder="Add a new task" style="width:70%; margin:10px;">
+<button onclick="addTodo()">Add</button>
+<ul id="todoList" style="text-align:left; list-style:none; padding:0;"></ul>
+</div>
+
+<!-- MAP -->
+<div class="box">
+<h2>📍 Map</h2>
+<iframe
+src="https://maps.google.com/maps?q=Delhi&z=11&output=embed">
+</iframe>
+</div>
+
+<!-- YOUTUBE -->
+<div class="box">
+<h2>▶️ YouTube</h2>
+<iframe
+src="https://www.youtube.com"
+allowfullscreen>
+</iframe>
+</div>
+
+<!-- STOPWATCH/TIMER -->
+<div class="box">
+<h2>⏱️ Stopwatch/Timer</h2>
+<div id="timerDisplay" style="font-size: 2.5rem; font-weight: bold; color: #ff0000; margin: 20px 0;">00:00:00</div>
+<input id="timerInput" type="number" placeholder="Seconds" min="1" style="width: 60%;">
+<br>
+<button onclick="startStopwatch()">Start</button>
+<button onclick="stopStopwatch()">Stop</button>
+<button onclick="resetTimer()">Reset</button>
+<button onclick="startTimer()">Timer</button>
+</div>
+
+<!-- TEXT TOOLS -->
+<div class="box">
+<h2>✏️ Text Tools</h2>
+<textarea id="textInput" rows="4" style="width:100%; margin:10px 0;" placeholder="Enter text..."></textarea>
+<br>
+<button onclick="wordCount()">Count Words</button>
+<button onclick="charCount()">Count Chars</button>
+<button onclick="toUpperCase()">UPPERCASE</button>
+<button onclick="toLowerCase()">lowercase</button>
+<button onclick="reverseText()">Reverse</button>
+<h3 id="textResult"></h3>
+</div>
+
+<!-- PASSWORD GENERATOR -->
+<div class="box">
+<h2>🔐 Password Generator</h2>
+<input id="passwordLength" type="number" placeholder="Length (8-50)" min="8" max="50" value="16" style="width: 60%;">
+<br>
+<label style="margin: 10px;">
+<input type="checkbox" id="useNumbers" checked> Numbers
+</label>
+<label style="margin: 10px;">
+<input type="checkbox" id="useSymbols" checked> Symbols
+</label>
+<br>
+<button onclick="generatePassword()">Generate</button>
+<input id="generatedPassword" type="text" readonly style="width: 80%; margin-top: 10px;">
+<button onclick="copyPassword()" style="width: 15%;">Copy</button>
+</div>
+
+<!-- COLOR PICKER -->
+<div class="box">
+<h2>🎨 Color Tools</h2>
+<input id="colorInput" type="color" value="#ff0000" style="width: 60px; height: 60px; cursor: pointer; border: none; border-radius: 10px; margin: 10px;">
+<br>
+<button onclick="copyHexColor()">Copy HEX</button>
+<button onclick="copyRGBColor()">Copy RGB</button>
+<h3 id="colorDisplay">#FF0000</h3>
+<h3 id="rgbDisplay">RGB(255, 0, 0)</h3>
+</div>
+
+</div>
+
+<!-- Scroll to Top Button -->
+<button id="scrollToTop" onclick="scrollToTop()" style="position: fixed; bottom: 20px; right: 20px; background: linear-gradient(45deg, #ff0000, #cc0000); color: white; border: none; border-radius: 50%; width: 50px; height: 50px; font-size: 20px; cursor: pointer; opacity: 0; transition: all 0.3s ease; box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);">↑</button>
+
+<script>
+
+// THEME
+function toggleTheme(){
+  document.body.classList.toggle("light");
+  animateButton(event.target);
+}
+
+// Function to animate buttons
+function animateButton(btn) {
+  btn.style.animation = 'pulse 0.3s ease';
+  setTimeout(() => {
+    btn.style.animation = '';
+  }, 300);
+}
+
+// Scroll to top function
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth'
+  });
+}
+
+// Add click animation to all buttons
+document.addEventListener('DOMContentLoaded', function() {
+  loadNote();
+  loadTodos();
+  const buttons = document.querySelectorAll('button');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      animateButton(this);
+    });
+  });
+
+  // Scroll-triggered animations
+  const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate');
+      }
+    });
+  }, observerOptions);
+
+  // Observe all boxes
+  const boxes = document.querySelectorAll('.box');
+  boxes.forEach(box => {
+    observer.observe(box);
+  });
+
+  // Scroll to top button visibility
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.style.opacity = '1';
+    } else {
+      scrollToTopBtn.style.opacity = '0';
+    }
+  });
+});
+
+// CLOCK
+setInterval(()=>{
+  const d=new Date();
+  clock.innerText=d.toLocaleString();
+},1000);
+
+// CALCULATOR
+function calc(op){
+  const a=+num1.value;
+  const b=+num2.value;
+  let r=0;
+  if(op==="+") r=a+b;
+  if(op==="−"||op==="-") r=a-b;
+  if(op==="×"||op==="*") r=a*b;
+  if(op==="÷"||op==="/") r=b?a/b:"Error";
+  calcResult.innerText="Result: "+r;
+}
+
+// SCIENTIFIC
+function s(t){
+  const x=+sci.value;
+  let r=0;
+  if(t==="sqrt") r=Math.sqrt(x);
+  if(t==="square") r=x*x;
+  if(t==="sin") r=Math.sin(x);
+  if(t==="cos") r=Math.cos(x);
+  sciResult.innerText=r;
+}
+
+// CURRENCY
+async function convert(){
+  const url=
+  `https://api.exchangerate-api.com/v4/latest/${from.value}`;
+  const res=await fetch(url);
+  const data=await res.json();
+  const rate=data.rates[to.value];
+  currencyResult.innerText=
+    amount.value*rate+" "+to.value;
+}
+
+// UNIT
+function toMiles(){
+  unitResult.innerText=
+    (km.value*0.621371).toFixed(2)+" miles";
+}
+function toKm(){
+  unitResult.innerText=
+    (km.value/0.621371).toFixed(2)+" km";
+}
+
+// WEATHER (uses browser location)
+function getWeather(){
+  navigator.geolocation.getCurrentPosition(async p=>{
+    const lat=p.coords.latitude;
+    const lon=p.coords.longitude;
+    const url=
+    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`;
+    const r=await fetch(url);
+    const d=await r.json();
+    weather.innerText=
+      "Temp: "+d.current_weather.temperature+"°C";
+  });
+}
+
+// NOTES
+function saveNote(){
+  localStorage.setItem("note",note.value);
+}
+function loadNote(){
+  note.value=localStorage.getItem("note")||"";
+}
+
+// TODO LIST
+function addTodo(){
+  const task = todoInput.value.trim();
+  if(task){
+    const li = document.createElement('li');
+    li.innerHTML = `${task} <button onclick="removeTodo(this)">❌</button>`;
+    todoList.appendChild(li);
+    todoInput.value = '';
+    saveTodos();
+  }
+}
+
+function removeTodo(btn){
+  btn.parentElement.remove();
+  saveTodos();
+}
+
+function saveTodos(){
+  const todos = Array.from(todoList.children).map(li => li.textContent.replace('❌', '').trim());
+  localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function loadTodos(){
+  const todos = JSON.parse(localStorage.getItem('todos') || '[]');
+  todos.forEach(task => {
+    const li = document.createElement('li');
+    li.innerHTML = `${task} <button onclick="removeTodo(this)">❌</button>`;
+    todoList.appendChild(li);
+  });
+}
+
+// Load notes and todos on page load
+document.addEventListener('DOMContentLoaded', function() {
+  loadNote();
+  loadTodos();
+  // ... rest of the existing code
+});
+
+// STOPWATCH/TIMER
+let timerInterval = null;
+let timerSeconds = 0;
+let isRunning = false;
+
+function startStopwatch(){
+  if(!isRunning){
+    isRunning = true;
+    timerInterval = setInterval(()=>{
+      timerSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+}
+
+function stopStopwatch(){
+  isRunning = false;
+  clearInterval(timerInterval);
+}
+
+function resetTimer(){
+  isRunning = false;
+  clearInterval(timerInterval);
+  timerSeconds = 0;
+  updateTimerDisplay();
+}
+
+function startTimer(){
+  const inputSeconds = parseInt(timerInput.value);
+  if(inputSeconds){
+    timerSeconds = -inputSeconds;
+    isRunning = true;
+    timerInterval = setInterval(()=>{
+      timerSeconds++;
+      if(timerSeconds >= 0){
+        clearInterval(timerInterval);
+        isRunning = false;
+        alert('Timer Complete!');
+      }
+      updateTimerDisplay();
+    }, 1000);
+  }
+}
+
+function updateTimerDisplay(){
+  const absSeconds = Math.abs(timerSeconds);
+  const hours = Math.floor(absSeconds / 3600);
+  const minutes = Math.floor((absSeconds % 3600) / 60);
+  const seconds = absSeconds % 60;
+  timerDisplay.innerText = 
+    String(hours).padStart(2, '0') + ':' +
+    String(minutes).padStart(2, '0') + ':' +
+    String(seconds).padStart(2, '0');
+}
+
+// TEXT TOOLS
+function wordCount(){
+  const text = textInput.value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  textResult.innerText = `Words: ${words}`;
+}
+
+function charCount(){
+  const text = textInput.value;
+  textResult.innerText = `Characters: ${text.length}`;
+}
+
+function toUpperCase(){
+  textInput.value = textInput.value.toUpperCase();
+  textResult.innerText = 'Text converted to UPPERCASE';
+}
+
+function toLowerCase(){
+  textInput.value = textInput.value.toLowerCase();
+  textResult.innerText = 'Text converted to lowercase';
+}
+
+function reverseText(){
+  textInput.value = textInput.value.split('').reverse().join('');
+  textResult.innerText = 'Text reversed';
+}
+
+// PASSWORD GENERATOR
+function generatePassword(){
+  const length = parseInt(passwordLength.value) || 16;
+  const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+  const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = useNumbers.checked ? '0123456789' : '';
+  const symbols = useSymbols.checked ? '!@#$%^&*()_+-=[]{}|;:,.<>?' : '';
+  
+  const all = lowercase + uppercase + numbers + symbols;
+  let password = '';
+  
+  for(let i = 0; i < length; i++){
+    password += all.charAt(Math.floor(Math.random() * all.length));
+  }
+  
+  generatedPassword.value = password;
+}
+
+function copyPassword(){
+  generatedPassword.select();
+  document.execCommand('copy');
+  alert('Password copied!');
+}
+
+// COLOR TOOLS
+function updateColorDisplay(){
+  const hex = colorInput.value.toUpperCase();
+  const rgb = hexToRgb(hex);
+  colorDisplay.innerText = hex;
+  rgbDisplay.innerText = `RGB(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+}
+
+function hexToRgb(hex){
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  return result ? {
+    r: parseInt(result[1], 16),
+    g: parseInt(result[2], 16),
+    b: parseInt(result[3], 16)
+  } : {r: 0, g: 0, b: 0};
+}
+
+function copyHexColor(){
+  const hex = colorInput.value;
+  navigator.clipboard.writeText(hex).then(()=>{
+    alert('HEX copied: ' + hex);
+  });
+}
+
+function copyRGBColor(){
+  const hex = colorInput.value;
+  const rgb = hexToRgb(hex);
+  const rgbText = `rgb(${rgb.r}, ${rgb.g}, ${rgb.b})`;
+  navigator.clipboard.writeText(rgbText).then(()=>{
+    alert('RGB copied: ' + rgbText);
+  });
+}
+
+// Update color display on change
+document.addEventListener('DOMContentLoaded', function(){
+  const colorInput = document.getElementById('colorInput');
+  if(colorInput){
+    colorInput.addEventListener('change', updateColorDisplay);
+    updateColorDisplay();
+  }
+});
+
+</script>
+
+</body>
+</html>
