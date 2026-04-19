@@ -1,12 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clay & Glass Store - Premium Pottery & Glassware</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5.0">
+    <meta name="theme-color" content="#C35A3D">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cups & Croccery - Premium Pottery & Glassware</title>
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- 3D Model Viewer -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+    <!-- Vanilla Tilt for 3D Cards -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
     <style>
+        :root {
+            /* Mud & Clay Palette */
+            --primary: #8C4A32;
+            /* Raw Terracotta / Baked Mud */
+            --primary-dark: #6b3724;
+            --secondary: #4A3B32;
+            /* Dark Earth / Peat */
+            --bg-light: #F4EFEB;
+            /* Sandy Clay */
+            --bg-mud: #E6DED5;
+            /* Wet Mud base */
+            --text-dark: #f3efed;
+            --text-muted: #6b5c54;
+            --white: #FDFBF7;
+            /* Off-white parchment */
+            --accent: #C08A62;
+            /* Ochre / Glaze */
+            --dark-clay: #e48841;
+            /* Dark Clay */
+
+            /* Frosted Matte / Ceramic */
+            --glass-bg: rgba(244, 239, 235, 0.85);
+            --glass-border: rgba(140, 74, 50, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(74, 59, 50, 0.08);
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -14,11 +54,39 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Outfit', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            background-image: url('pottery_studio_bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* SVG Noise Texture for Handmade Feel */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.35;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            mix-blend-mode: multiply;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        .logo {
+            font-family: 'Fraunces', serif;
         }
 
         .container {
@@ -27,11 +95,24 @@
             padding: 0 20px;
         }
 
-        /* Header */
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Header - Glassmorphism */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--glass-border);
             position: fixed;
             top: 0;
             width: 100%;
@@ -39,184 +120,455 @@
             transition: all 0.3s ease;
         }
 
+        header.scrolled {
+            box-shadow: var(--glass-shadow);
+        }
+
         nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 0;
+            padding: 1.2rem 0;
         }
 
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            color: #8B4513;
+            color: var(--primary);
             text-decoration: none;
+            letter-spacing: -0.5px;
+            text-transform: lowercase;
         }
 
         .nav-links {
             display: flex;
             list-style: none;
-            gap: 2rem;
+            gap: 2.5rem;
+            align-items: center;
         }
 
         .nav-links a {
             text-decoration: none;
-            color: #333;
+            color: var(--secondary);
             font-weight: 500;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-links a:hover {
-            color: #8B4513;
+            color: var(--primary);
         }
 
         .cart-icon {
             position: relative;
             cursor: pointer;
             font-size: 1.5rem;
-            color: #333;
+            color: var(--secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+            color: var(--primary);
         }
 
         .cart-count {
             position: absolute;
-            top: -10px;
+            top: -8px;
             right: -10px;
-            background: #8B4513;
-            color: white;
+            background: var(--primary);
+            color: var(--white);
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 0.75rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 100vh;
+            position: relative;
+            min-height: 100vh;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            background: transparent;
+            overflow: hidden;
+            margin-top: 0;
+            padding-top: 80px;
+        }
+
+        .hero-aurora {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background-color: #fdfbf7;
+        }
+
+        .aurora-blob {
+            position: absolute;
+            filter: blur(90px);
+            opacity: 0.5;
+            animation: floatBlob 25s infinite alternate ease-in-out;
+            border-radius: 50%;
+        }
+
+        .aurora-1 {
+            background: #8C4A32;
+            /* Raw Terracotta */
+            width: 80vw;
+            height: 80vw;
+            max-width: 800px;
+            max-height: 800px;
+            top: -20%;
+            left: -20%;
+            animation-delay: 0s;
+        }
+
+        .aurora-2 {
+            background: #C08A62;
+            /* Ochre */
+            width: 70vw;
+            height: 70vw;
+            max-width: 700px;
+            max-height: 700px;
+            bottom: -20%;
+            right: -20%;
+            animation-delay: -5s;
+        }
+
+        .aurora-3 {
+            background: #4A3B32;
+            /* Dark Earth */
+            width: 60vw;
+            height: 60vw;
+            max-width: 600px;
+            max-height: 600px;
+            top: 20%;
+            left: 20%;
+            opacity: 0.15;
+            animation-delay: -10s;
+        }
+
+        @keyframes floatBlob {
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            33% {
+                transform: translate(150px, -100px) scale(1.1);
+            }
+
+            66% {
+                transform: translate(-100px, 150px) scale(0.9);
+            }
+
+            100% {
+                transform: translate(0, 0) scale(1);
+            }
+        }
+
+        .hero-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background-image:
+                linear-gradient(rgba(42, 54, 59, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(42, 54, 59, 0.04) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .hero .container {
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: white;
-            margin-top: 80px;
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            pointer-events: none;
+            /* Let clicks pass through to models */
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 650px;
+            pointer-events: auto;
+            /* Enable clicks on content */
+            background: rgba(253, 251, 247, 0.75);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
         }
 
         .hero-content h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-size: 4.5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary);
+            font-style: italic;
         }
 
         .hero-content p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            max-width: 600px;
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-muted);
         }
 
         .btn {
             display: inline-block;
-            padding: 12px 30px;
-            background: #8B4513;
-            color: white;
+            padding: 14px 36px;
+            background: var(--primary);
+            color: var(--white);
             text-decoration: none;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 2px solid #8B4513;
+            border-radius: 25px 30px 25px 20px;
+            /* Organic handmade shape */
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 2px solid var(--primary);
+            box-shadow: 0 4px 15px rgba(140, 74, 50, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: skewX(-20deg);
+            transition: all 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
         }
 
         .btn:hover {
-            background: transparent;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(140, 74, 50, 0.4);
+            border-radius: 30px 25px 20px 25px;
+            /* Shift shape on hover */
+        }
+
+        .model-top,
+        .model-bottom {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            z-index: -1;
+            --poster-color: transparent;
+            cursor: grab;
+        }
+
+        .model-top:active,
+        .model-bottom:active {
+            cursor: grabbing;
+        }
+
+        .model-top {
+            top: 50%;
+            left: 25%;
+            transform: translate(-50%, -50%) scale(2);
+        }
+
+        .model-bottom {
+            bottom: 30%;
+            right: 25%;
+            transform: translate(50%, 50%) scale(2);
+        }
+
+        model-viewer {
+            width: 100%;
+            height: 100%;
+            --poster-color: transparent;
         }
 
         /* Products Section */
         .products {
-            padding: 80px 0;
-            background: white;
+            padding: 100px 0;
+            background: transparent;
+            position: relative;
         }
 
         .section-title {
             text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            color: #333;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 4rem;
+            font-size: 1.1rem;
         }
 
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            gap: 2.5rem;
         }
 
         .product-card {
-            background: white;
-            border-radius: 15px;
+            background: var(--dark-clay);
+            border-radius: 20px 24px 18px 22px;
+            /* Organic handmade shape */
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        .product-image-container {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px 24px 0 0;
+            transform: translateZ(30px);
         }
 
         .product-image {
-            height: 250px;
+            height: 280px;
             background-size: cover;
             background-position: center;
-            position: relative;
+            transition: transform 0.6s ease;
+        }
+
+        .product-card:hover .product-image {
+            transform: scale(1.05);
         }
 
         .product-info {
-            padding: 1.5rem;
+            padding: 2rem;
+            transform: translateZ(20px);
         }
 
         .product-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: var(--white);
+            font-weight: 700;
         }
 
         .product-price {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #8B4513;
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--white);
             margin-bottom: 1rem;
         }
 
         .product-description {
-            color: #666;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .product-action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            transform: translateZ(40px);
         }
 
         .add-to-cart {
-            width: 100%;
-            padding: 10px;
-            background: #8B4513;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
+            flex: 1;
+            padding: 14px;
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            border-radius: 20px 25px 22px 18px;
+            /* Organic */
+            font-weight: 500;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
         .add-to-cart:hover {
-            background: #654321;
+            background: var(--secondary);
+            color: var(--white);
+            box-shadow: 0 5px 15px rgba(42, 54, 59, 0.2);
+            border-radius: 25px 20px 18px 22px;
+            /* Shift on hover */
+        }
+
+        .whatsapp-order-btn {
+            flex: 1;
+            padding: 14px;
+            background: #25D366;
+            color: var(--white);
+            border: 1px solid #25D366;
+            border-radius: 22px 18px 20px 25px;
+            /* Organic opposite */
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .whatsapp-order-btn:hover {
+            background: #20b858;
+            border-color: #20b858;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            color: var(--white);
+            border-radius: 18px 22px 25px 20px;
+            /* Shift on hover */
         }
 
         /* Cart Modal */
@@ -227,69 +579,75 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(34, 34, 34, 0.6);
+            backdrop-filter: blur(5px);
             z-index: 2000;
-            animation: fadeIn 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .cart-modal.show {
+            display: block;
+            opacity: 1;
         }
 
         .cart-content {
             position: absolute;
-            right: 0;
+            right: -100%;
             top: 0;
-            width: 400px;
-            max-width: 90vw;
+            width: 450px;
+            max-width: 100vw;
             height: 100%;
-            background: white;
-            padding: 2rem;
+            background: var(--white);
+            padding: 2.5rem;
             overflow-y: auto;
-            animation: slideIn 0.3s ease;
+            transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.1);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
+        .cart-modal.show .cart-content {
+            right: 0;
         }
 
         .cart-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eee;
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #eee;
         }
 
         .cart-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: #333;
+            font-size: 2rem;
+            color: var(--secondary);
         }
 
         .close-cart {
-            font-size: 1.5rem;
+            font-size: 2rem;
             cursor: pointer;
-            color: #666;
+            color: var(--text-muted);
+            transition: color 0.3s ease;
+            line-height: 1;
+        }
+
+        .close-cart:hover {
+            color: var(--primary);
         }
 
         .cart-item {
             display: flex;
             align-items: center;
-            margin-bottom: 1rem;
-            padding: 1rem;
-            background: #f9f9f9;
-            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px dashed #eee;
         }
 
         .cart-item img {
-            width: 60px;
-            height: 60px;
-            border-radius: 8px;
-            margin-right: 1rem;
+            width: 80px;
+            height: 80px;
+            border-radius: 12px;
+            margin-right: 1.5rem;
             object-fit: cover;
         }
 
@@ -298,306 +656,187 @@
         }
 
         .cart-item-name {
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
             margin-bottom: 0.3rem;
+            color: var(--secondary);
         }
 
         .cart-item-price {
-            color: #8B4513;
+            color: var(--primary);
             font-weight: 500;
+            margin-bottom: 0.5rem;
         }
 
         .cart-item-quantity {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 1rem;
         }
 
         .quantity-btn {
-            width: 25px;
-            height: 25px;
-            border: none;
-            background: #8B4513;
-            color: white;
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ddd;
+            background: var(--white);
+            color: var(--text-dark);
             border-radius: 50%;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.8rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .quantity-btn:hover {
+            background: var(--secondary);
+            color: var(--white);
+            border-color: var(--secondary);
         }
 
         .remove-item {
-            color: #ff4444;
+            color: var(--text-muted);
             cursor: pointer;
-            margin-left: 1rem;
+            font-size: 0.85rem;
+            text-decoration: underline;
+            transition: color 0.2s ease;
+            margin-left: auto;
+        }
+
+        .remove-item:hover {
+            color: #ff4444;
         }
 
         .cart-total {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 2px solid #eee;
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--bg-light);
+            border-radius: 15px;
             text-align: center;
         }
 
+        .cart-total p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
         .total-price {
-            font-size: 1.5rem;
+            font-size: 2rem;
             font-weight: 700;
-            color: #8B4513;
+            color: var(--secondary);
+            font-family: 'Playfair Display', serif;
+            display: block;
+            margin-bottom: 1.5rem;
         }
 
         .checkout-btn {
             width: 100%;
-            padding: 15px;
-            background: #8B4513;
-            color: white;
+            padding: 16px;
+            background: var(--primary);
+            color: var(--white);
             border: none;
-            border-radius: 25px;
+            border-radius: 25px 30px 25px 20px;
+            /* Organic */
             font-weight: 600;
             cursor: pointer;
-            margin-top: 1rem;
-            transition: background 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
         }
 
         .checkout-btn:hover {
-            background: #654321;
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(140, 74, 50, 0.3);
+            border-radius: 30px 25px 20px 25px;
         }
 
-        /* Footer */
-        footer {
-            background: #333;
-            color: white;
-            padding: 3rem 0 1rem;
-            text-align: center;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: #8B4513;
-        }
-
-        .footer-section p, .footer-section a {
-            color: #ccc;
-            text-decoration: none;
-            margin-bottom: 0.5rem;
-            display: block;
-        }
-
-        .footer-section a:hover {
-            color: #8B4513;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            color: white;
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .social-links a:hover {
-            color: #8B4513;
-        }
-
-        .copyright {
-            border-top: 1px solid #555;
-            padding-top: 1rem;
-            color: #999;
-        }
-
-        /* Contact Section */
-        .contact {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: start;
-        }
-
-        .contact-info {
-            padding: 2rem;
-            background: #f9f9f9;
-            border-radius: 15px;
-        }
-
-        .contact-info h3 {
-            font-family: 'Playfair Display', serif;
-            color: #8B4513;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .contact-item i {
-            color: #8B4513;
-            font-size: 1.2rem;
-            margin-right: 1rem;
-            width: 20px;
-        }
-
-        .contact-item h4 {
-            margin-bottom: 0.3rem;
-            color: #333;
-            font-size: 1rem;
-        }
-
-        .contact-item p {
-            color: #666;
-            margin: 0;
-            font-size: 0.9rem;
-        }
-
-        .map-container {
-            height: 300px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Address Modal */
-        .address-modal {
+        /* Modals Generic Styles */
+        .modal-overlay {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(34, 34, 34, 0.8);
+            backdrop-filter: blur(5px);
             z-index: 2500;
-            animation: fadeIn 0.3s ease;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        .address-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        .address-header {
-            text-align: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eee;
-        }
-
-        .address-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: #333;
-            margin-bottom: 0.5rem;
-        }
-
-        .address-form {
-            display: grid;
-            gap: 1rem;
-        }
-
-        .address-buttons {
+        .modal-overlay.show {
             display: flex;
-            gap: 1rem;
-            margin-top: 1.5rem;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
         }
 
-        .payment-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem;
-            border-radius: 15px;
+        .modal-content {
+            background: var(--white);
+            padding: 3rem;
+            border-radius: 20px;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
             max-height: 90vh;
             overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
         }
 
-        .payment-header {
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
             text-align: center;
             margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #eee;
         }
 
-        .payment-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.8rem;
-            color: #333;
+        .modal-title {
+            font-size: 2.2rem;
+            color: var(--secondary);
             margin-bottom: 0.5rem;
-        }
-
-        .order-summary {
-            background: #f9f9f9;
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1.5rem;
-        }
-
-        .order-total {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: #8B4513;
-            text-align: center;
-        }
-
-        .payment-form {
-            display: grid;
-            gap: 1rem;
         }
 
         .form-group {
-            display: flex;
-            flex-direction: column;
+            margin-bottom: 1.5rem;
         }
 
         .form-group label {
+            display: block;
             font-weight: 500;
             margin-bottom: 0.5rem;
-            color: #333;
+            color: var(--secondary);
+            font-size: 0.9rem;
         }
 
         .form-group input,
-        .form-group select {
-            padding: 12px;
-            border: 2px solid #e1e1e1;
-            border-radius: 8px;
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
             font-size: 1rem;
-            transition: border-color 0.3s ease;
+            font-family: inherit;
+            background: #fafafa;
+            transition: all 0.3s ease;
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
-            border-color: #8B4513;
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 3px rgba(140, 74, 50, 0.1);
         }
 
         .card-inputs {
@@ -606,117 +845,526 @@
             gap: 1rem;
         }
 
-        .payment-buttons {
+        .modal-buttons {
             display: flex;
             gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-outline {
+            flex: 1;
+            padding: 14px;
+            background: transparent;
+            color: var(--secondary);
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-outline:hover {
+            background: #f5f5f5;
+        }
+
+        .btn-solid {
+            flex: 1;
+            padding: 14px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 25px 30px 25px 20px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(140, 74, 50, 0.2);
+        }
+
+        .btn-solid:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(140, 74, 50, 0.3);
+            border-radius: 30px 25px 20px 25px;
+        }
+
+        /* Order Summary in Payment Modal */
+        .order-summary {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            border: 1px solid #eee;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 100px 0;
+            background: transparent;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .contact-info {
+            padding: 3rem;
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .contact-info h3 {
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-size: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item i {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-right: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .contact-item h4 {
+            margin-bottom: 0.3rem;
+            color: var(--secondary);
+            font-size: 1.1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
+
+        .contact-item p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .map-container {
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #a0aab2;
+            text-decoration: none;
+            margin-bottom: 0.8rem;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--white);
+            padding-left: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
             margin-top: 1.5rem;
         }
 
-        .pay-btn {
-            flex: 1;
-            padding: 15px;
-            background: #8B4513;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
         }
 
-        .pay-btn:hover {
-            background: #654321;
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            padding-left: 0;
+            /* Override previous hover */
         }
 
-        .cancel-btn {
-            flex: 1;
-            padding: 15px;
-            background: #f0f0f0;
-            color: #333;
-            border: none;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .cancel-btn:hover {
-            background: #e0e0e0;
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            color: #a0aab2;
+            font-size: 0.9rem;
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
+        @media (max-width: 992px) {
+            .hero .container {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 2rem;
+            }
+
+            .hero-content {
+                margin-bottom: 2rem;
+            }
+
             .hero-content h1 {
-                font-size: 2.5rem;
+                font-size: 3.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 0;
             }
 
             .nav-links {
                 display: none;
             }
 
-            .cart-content {
-                width: 100%;
-                max-width: 100vw;
+            .logo {
+                font-size: 1.8rem;
+            }
+
+            .hero {
+                padding-top: 60px;
+                min-height: auto;
+            }
+
+            .hero-content {
+                padding: 2rem;
+                max-width: 100%;
+            }
+
+            .hero-content h1 {
+                font-size: 2.2rem;
+                line-height: 1.2;
+            }
+
+            .hero-content p {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .btn {
+                padding: 12px 28px;
+                font-size: 0.85rem;
+                min-height: 44px;
+                min-width: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                touch-action: manipulation;
             }
 
             .product-grid {
                 grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
 
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
+            .product-image {
+                height: 200px;
             }
 
-            .map-container {
-                height: 250px;
+            .product-name {
+                font-size: 1.2rem;
             }
 
-            .payment-content {
+            .add-to-cart,
+            .whatsapp-order-btn {
+                padding: 12px;
+                min-height: 44px;
+                font-size: 0.75rem;
+                touch-action: manipulation;
+            }
+
+            .product-action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .model-left,
+            .model-right {
+                display: none;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .modal-content {
+                padding: 1.5rem;
                 width: 95%;
-                padding: 1rem;
             }
 
             .card-inputs {
                 grid-template-columns: 1fr;
             }
 
-            .payment-buttons {
-                flex-direction: column;
+            .cart-content {
+                width: 100%;
+                padding: 1.5rem;
             }
 
-            .address-content {
-                width: 95%;
-                padding: 1rem;
+            .contact-info {
+                padding: 2rem;
             }
 
-            .address-buttons {
-                flex-direction: column;
+            .contact-info h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                position: sticky;
+                top: 0;
+            }
+
+            nav {
+                padding: 0.8rem 0;
+                flex-wrap: wrap;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .cart-icon {
+                font-size: 1.3rem;
+            }
+
+            .hero {
+                padding-top: 50px;
+                min-height: auto;
+            }
+
+            .hero-content {
+                padding: 1.5rem;
+                border-radius: 15px;
+                background: rgba(253, 251, 247, 0.85);
+            }
+
+            .hero-content h1 {
+                font-size: 1.8rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-content p {
+                font-size: 0.9rem;
+                margin-bottom: 1.2rem;
+            }
+
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.8rem;
+                min-height: 40px;
+            }
+
+            .products {
+                padding: 50px 0;
+            }
+
+            .section-title {
+                font-size: 1.6rem;
+                margin-bottom: 0.3rem;
+            }
+
+            .section-subtitle {
+                font-size: 0.95rem;
+                margin-bottom: 2rem;
+            }
+
+            .product-card {
+                border-radius: 15px;
+            }
+
+            .product-image {
+                height: 180px;
+            }
+
+            .product-info {
+                padding: 1.5rem;
+            }
+
+            .product-name {
+                font-size: 1.1rem;
+            }
+
+            .product-price {
+                font-size: 1.1rem;
+            }
+
+            .product-description {
+                font-size: 0.85rem;
+            }
+
+            .add-to-cart,
+            .whatsapp-order-btn {
+                padding: 10px;
+                min-height: 40px;
+                font-size: 0.75rem;
+            }
+
+            .cart-title {
+                font-size: 1.5rem;
+            }
+
+            .cart-modal.show .cart-content {
+                width: 100%;
+            }
+
+            .contact {
+                padding: 50px 0;
+            }
+
+            .contact-info {
+                padding: 1.5rem;
+                border-radius: 15px;
+            }
+
+            .contact-info h3 {
+                font-size: 1.3rem;
+            }
+
+            .contact-item i {
+                font-size: 1.2rem;
+            }
+
+            .modal-content {
+                padding: 1.2rem;
+                border-radius: 15px;
+            }
+
+            .modal-title {
+                font-size: 1.6rem;
+            }
+
+            .form-group input,
+            .form-group select,
+            .form-group textarea {
+                padding: 12px;
+                font-size: 16px;
+                /* Prevents zoom on iOS */
+            }
+
+            .checkout-btn,
+            .btn-solid,
+            .btn-outline {
+                min-height: 44px;
+                font-size: 0.8rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+
+            /* Disable hover effects on touch devices */
+            @media (hover: none) and (pointer: coarse) {
+                .product-card:hover .product-image {
+                    transform: scale(1);
+                }
+
+                .btn:hover {
+                    transform: none;
+                }
+
+                .product-card:hover {
+                    transform: none;
+                }
+            }
+        }
+
+        /* Touch device optimizations */
+        @media (hover: none) and (pointer: coarse) {
+            .btn:active {
+                transform: scale(0.98);
+            }
+
+            .add-to-cart:active,
+            .whatsapp-order-btn:active {
+                transform: scale(0.98);
+            }
+
+            .product-card {
+                transform-style: flat;
+                will-change: auto;
             }
         }
     </style>
 </head>
+
 <body>
-    <header>
+    <header id="header">
         <nav class="container">
-            <a href="#" class="logo">cups & croccery </a>
+            <a href="#" class="logo">cups & croccery</a>
             <ul class="nav-links">
-                <li><a href="#products">Products</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a>7388400233</li>
+                <li><a href="#products">Collection</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#">Tel: 7388400233</a></li>
             </ul>
             <div class="cart-icon" onclick="toggleCart()">
-                <i class="fas fa-shopping-cart"></i>
+                <i class="fas fa-shopping-bag"></i>
                 <span class="cart-count" id="cartCount">0</span>
             </div>
         </nav>
     </header>
 
     <section class="hero">
+        <!-- 3D Model: Cup (Top Center) -->
+        <model-viewer class="model-top" id="modelTop"
+            src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/DiffuseTransmissionTeacup/glTF-Binary/DiffuseTransmissionTeacup.glb"
+            alt="A 3D model of a ceramic teacup" shadow-intensity="1" camera-controls disable-zoom disable-pan ar>
+        </model-viewer>
+
+        <!-- 3D Model: Dish (Bottom Center) -->
+        <model-viewer class="model-bottom" id="modelBottom"
+            src="https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/IridescentDishWithOlives/glTF-Binary/IridescentDishWithOlives.glb"
+            alt="A 3D model of a ceramic dish" shadow-intensity="1" camera-controls disable-zoom disable-pan ar>
+        </model-viewer>
+
         <div class="container">
-            <div class="hero-content">
-                <h1>Handcrafted Beauty</h1>
-                <p>Discover our exquisite collection of clay cups and glassware, each piece crafted with passion and precision for your home.</p>
+            <div class="hero-content reveal">
+                <h1>Elevate Your <br><span>Everyday</span> Rituals</h1>
+                <p>Discover our curated collection of premium artisanal ceramics and glassware. Crafted with passion,
+                    designed for modern living.</p>
                 <a href="#products" class="btn">Explore Collection</a>
             </div>
         </div>
@@ -724,7 +1372,8 @@
 
     <section id="products" class="products">
         <div class="container">
-            <h2 class="section-title">Our Collection</h2>
+            <h2 class="section-title reveal">Curated Collection</h2>
+            <p class="section-subtitle reveal">Handpicked pieces to bring warmth to your home.</p>
             <div class="product-grid" id="productGrid">
                 <!-- Products will be dynamically generated -->
             </div>
@@ -734,61 +1383,45 @@
     <!-- Contact Section -->
     <section id="contact" class="contact">
         <div class="container">
-            <h2 class="section-title">Easy to Reach Us</h2>
+            <h2 class="section-title reveal">Visit Our Studio</h2>
+            <p class="section-subtitle reveal">Experience the craftsmanship in person.</p>
+
             <div class="contact-grid">
-                <div class="contact-info">
-                    <h3>Visit Our Store</h3>
+                <div class="contact-info reveal">
+                    <h3>Get in Touch</h3>
                     <div class="contact-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
-                            <h4>Store Address</h4>
-                            <p>123 Pottery Lane<br>Craft City, CC 12345<br>United States</p>
+                            <h4>Studio Address</h4>
+                            <p>Dilli Haat - INA<br>New Delhi, India</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <h4>Store Hours</h4>
-                            <p>Monday - Friday: 9:00 AM - 7:00 PM<br>Saturday: 10:00 AM - 6:00 PM<br>Sunday: 12:00 PM - 5:00 PM</p>
+                            <h4>Opening Hours</h4>
+                            <p>Mon - Fri: 10:00 AM - 6:00 PM<br>Weekends: 11:00 AM - 5:00 PM</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-phone"></i>
                         <div>
-                            <h4>Phone</h4>
-                            <p>(555) 123-4567</p>
+                            <h4>Contact Number</h4>
+                            <p>7388400233</p>
                         </div>
                     </div>
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
                         <div>
-                            <h4>Email</h4>
-                            <p>info@clayandglass.com</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-parking"></i>
-                        <div>
-                            <h4>Parking</h4>
-                            <p>Free parking available on premises</p>
-                        </div>
-                    </div>
-                    <div class="contact-item">
-                        <i class="fas fa-bus"></i>
-                        <div>
-                            <h4>Public Transport</h4>
-                            <p>Bus stop "Pottery Lane" - 2 min walk<br>Metro: Craft City Central - 10 min walk</p>
+                            <h4>Email Enquiries</h4>
+                            <p>hello@cupsandcroccery.com</p>
                         </div>
                     </div>
                 </div>
-                <div class="map-container">
-                    <iframe 
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.241264746331!2d-73.98784868459375!3d40.74844097932847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1647891234567!5m2!1sen!2sus" 
-                        width="100%" 
-                        height="100%" 
-                        style="border:0;" 
-                        allowfullscreen="" 
-                        loading="lazy">
+                <div class="map-container reveal" style="transition-delay: 0.2s;">
+                    <iframe
+                        src="https://maps.google.com/maps?q=28.5733233,77.2075473&z=16&output=embed"
+                        width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
             </div>
@@ -797,118 +1430,107 @@
 
     <!-- Cart Modal -->
     <div class="cart-modal" id="cartModal">
-        <div class="cart-content">
+        <div class="cart-content" id="cartContent">
             <div class="cart-header">
-                <h3 class="cart-title">Your Cart</h3>
-                <span class="close-cart" onclick="toggleCart()">&times;</span>
+                <h3 class="cart-title">Your Bag</h3>
+                <span class="close-cart" onclick="toggleCart()"><i class="fas fa-times"></i></span>
             </div>
             <div id="cartItems">
                 <!-- Cart items will be dynamically generated -->
             </div>
             <div class="cart-total">
-                <p>Total: $<span id="cartTotal">0.00</span></p>
+                <p>Subtotal</p>
+                <span class="total-price">$<span id="cartTotal">0.00</span></span>
                 <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
             </div>
         </div>
     </div>
 
     <!-- Address Modal -->
-    <div class="address-modal" id="addressModal">
-        <div class="address-content">
-            <div class="address-header">
-                <h3 class="address-title">Delivery Address</h3>
-                <p>Please provide your delivery address for this order</p>
+    <div class="modal-overlay" id="addressModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Shipping Details</h3>
+                <p style="color: var(--text-muted);">Where should we send your order?</p>
             </div>
-            <form class="address-form" id="addressForm">
+            <form id="addressForm">
                 <div class="form-group">
-                    <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" placeholder="John Doe" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone Number</label>
-                    <input type="tel" id="phone" placeholder="(555) 123-4567" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" placeholder="john@example.com" required>
-                </div>
-                <div class="form-group">
-                    <label for="streetAddress">Street Address</label>
-                    <input type="text" id="streetAddress" placeholder="123 Main Street" required>
-                </div>
-                <div class="form-group">
-                    <label for="city">City</label>
-                    <input type="text" id="city" placeholder="City Name" required>
+                    <label>Full Name</label>
+                    <input type="text" id="fullName" required>
                 </div>
                 <div class="card-inputs">
                     <div class="form-group">
-                        <label for="state">State</label>
-                        <input type="text" id="state" placeholder="State" required>
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" required>
                     </div>
                     <div class="form-group">
-                        <label for="zipCode">ZIP Code</label>
-                        <input type="text" id="zipCode" placeholder="12345" required>
+                        <label>Email Address</label>
+                        <input type="email" id="email" required>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="deliveryInstructions">Delivery Instructions (Optional)</label>
-                    <textarea id="deliveryInstructions" placeholder="Any special delivery instructions..." rows="3"></textarea>
+                    <label>Street Address</label>
+                    <input type="text" id="streetAddress" required>
                 </div>
-                <div class="address-buttons">
-                    <button type="button" class="cancel-btn" onclick="closeAddressModal()">Cancel</button>
-                    <button type="submit" class="pay-btn">Continue to Payment</button>
+                <div class="card-inputs">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="city" required>
+                    </div>
+                    <div class="form-group">
+                        <label>State</label>
+                        <input type="text" id="state" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>ZIP Code</label>
+                    <input type="text" id="zipCode" required>
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-outline" onclick="closeAddressModal()">Back to Cart</button>
+                    <button type="submit" class="btn-solid">Continue to Payment</button>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Payment Modal -->
-    <div class="payment-modal" id="paymentModal">
-        <div class="payment-content">
-            <div class="payment-header">
-                <h3 class="payment-title">Secure Payment</h3>
-                <p>Complete your order with our secure payment gateway</p>
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Payment</h3>
+                <p style="color: var(--text-muted);">Secure checkout process</p>
             </div>
             <div class="order-summary">
-                <h4>Order Summary</h4>
+                <h4 style="margin-bottom: 1rem; color: var(--secondary);">Order Summary</h4>
                 <div id="paymentOrderItems"></div>
-                <div class="order-total">Total: $<span id="paymentTotal">0.00</span></div>
+                <div
+                    style="border-top: 1px solid #ddd; margin-top: 1rem; padding-top: 1rem; font-weight: 700; font-size: 1.2rem; text-align: right; color: var(--primary);">
+                    Total: $<span id="paymentTotal">0.00</span>
+                </div>
             </div>
-            <form class="payment-form" id="paymentForm">
+            <form id="paymentForm">
                 <div class="form-group">
-                    <label for="cardName">Cardholder Name</label>
-                    <input type="text" id="cardName" placeholder="John Doe" required>
+                    <label>Cardholder Name</label>
+                    <input type="text" id="cardName" required>
                 </div>
                 <div class="form-group">
-                    <label for="cardNumber">Card Number</label>
-                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                    <label>Card Number</label>
+                    <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" required>
                 </div>
                 <div class="card-inputs">
                     <div class="form-group">
-                        <label for="expiryDate">Expiry Date</label>
+                        <label>Expiry Date</label>
                         <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
                     </div>
                     <div class="form-group">
-                        <label for="cvv">CVV</label>
+                        <label>CVV</label>
                         <input type="text" id="cvv" placeholder="123" maxlength="4" required>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label for="billingAddress">Billing Address</label>
-                    <input type="text" id="billingAddress" placeholder="123 Main St, City, State 12345" required>
-                </div>
-                <div class="form-group">
-                    <label for="paymentMethod">Payment Method</label>
-                    <select id="paymentMethod" required>
-                        <option value="">Select Payment Method</option>
-                        <option value="credit">Credit Card</option>
-                        <option value="debit">Debit Card</option>
-                        <option value="paypal">PayPal</option>
-                    </select>
-                </div>
-                <div class="payment-buttons">
-                    <button type="button" class="cancel-btn" onclick="closePaymentModal()">Cancel</button>
-                    <button type="submit" class="pay-btn">Pay Now</button>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-outline" onclick="closePaymentModal()">Cancel</button>
+                    <button type="submit" class="btn-solid" id="payBtn">Pay Now</button>
                 </div>
             </form>
         </div>
@@ -918,79 +1540,116 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>About Us</h3>
-                    <p>We specialize in handcrafted clay cups and premium glassware, bringing artisanal quality to your table.</p>
+                    <h3
+                        style="font-family: 'Playfair Display', serif; color: var(--white); font-size: 2rem; margin-bottom: 1rem;">
+                        cups & croccery</h3>
+                    <p style="max-width: 300px;">Crafting beautiful moments for your everyday rituals. Premium ceramics
+                        and glassware designed with intention.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    </div>
                 </div>
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <a href="#products">Products</a>
-                    <a href="#about">About</a>
-                    <a href="#contact">Contact</a>
+                    <h3>Shop</h3>
+                    <a href="#products">All Products</a>
+                    <a href="#">New Arrivals</a>
+                    <a href="#">Ceramics</a>
+                    <a href="#">Glassware</a>
                 </div>
                 <div class="footer-section">
-                    <h3>Contact Info</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> 123 Pottery Lane, Craft City, CC 12345</p>
-                    <p><i class="fas fa-phone"></i> (555) 123-4567 | 7388400233</p>
-                    <p><i class="fas fa-envelope"></i> info@clayandglass.com</p>
-                    <p><i class="fas fa-clock"></i> Mon-Fri: 9AM-7PM, Sat: 10AM-6PM</p>
+                    <h3>About</h3>
+                    <a href="#">Our Story</a>
+                    <a href="#">Sustainability</a>
+                    <a href="#">Care Guide</a>
+                    <a href="#contact">Contact Us</a>
                 </div>
-            </div>
-            <div class="social-links">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-pinterest"></i></a>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe for updates and exclusive offers.</p>
+                    <div style="display: flex; margin-top: 1rem;">
+                        <input type="email" placeholder="Your email address"
+                            style="padding: 10px 15px; border: none; border-radius: 5px 0 0 5px; width: 100%; outline: none;">
+                        <button
+                            style="background: var(--primary); border: none; padding: 0 15px; border-radius: 0 5px 5px 0; color: white; cursor: pointer;"><i
+                                class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2024 Clay & Glass Store. All rights reserved.</p>
+                <p>&copy; 2026 Cups & Croccery. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Scroll Reveal Animation
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
         // Product data
         const products = [
             {
                 id: 1,
-                name: "Ceramic Coffee Mug",
-                price: 24.99,
-                image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Hand-thrown ceramic mug with rustic finish, perfect for your morning coffee."
+                name: "Terracotta Coffee Mug",
+                price: 28.00,
+                image: "https://images.unsplash.com/photo-1514228742587-6b1558fcf93a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Hand-thrown ceramic mug with a raw terracotta finish. Perfect for slow mornings."
             },
             {
                 id: 2,
-                name: "Crystal Wine Glass",
-                price: 39.99,
-                image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Elegant crystal wine glass with fine craftsmanship and superior clarity."
+                name: "Fluted Crystal Glass",
+                price: 42.00,
+                image: "https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Elegant fluted crystal glass. Elevates your evening wine experience."
             },
             {
                 id: 3,
-                name: "Clay Tea Cup Set",
-                price: 34.99,
-                image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Traditional clay tea cup set, beautifully glazed with traditional patterns."
+                name: "Matcha Bowl Set",
+                price: 55.00,
+                image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Traditional matcha bowl, beautifully glazed with unique speckles."
             },
             {
                 id: 4,
-                name: "Glass Tumbler",
-                price: 19.99,
-                image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Modern glass tumbler with thick base, ideal for water or cocktails."
+                name: "Ribbed Water Tumbler",
+                price: 22.00,
+                image: "https://images.unsplash.com/photo-1544145945-f90425340c7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Modern ribbed glass tumbler. Substantial weight and beautiful light refraction."
             },
             {
                 id: 5,
-                name: "Porcelain Bowl",
-                price: 29.99,
-                image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Delicate porcelain bowl, perfect for soups, salads, or as a decorative piece."
+                name: "Minimalist Stoneware Bowl",
+                price: 34.00,
+                image: "https://images.unsplash.com/photo-1578916171728-46686eac8d58?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Delicate yet durable stoneware bowl with a matte cream glaze."
             },
             {
                 id: 6,
-                name: "Stemmed Glass Set",
-                price: 49.99,
-                image: "https://images.unsplash.com/photo-1474722883778-792e7990302f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80",
-                description: "Set of 4 stemmed glasses, elegant and versatile for various beverages."
+                name: "Coupe Glass Set (Set of 2)",
+                price: 68.00,
+                image: "https://images.unsplash.com/photo-1474722883778-792e7990302f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+                description: "Vintage-inspired coupe glasses. For champagne, cocktails, or desserts."
             }
         ];
 
@@ -998,7 +1657,7 @@
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
         // Initialize the page
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             displayProducts();
             updateCartCount();
             updateCartDisplay();
@@ -1009,20 +1668,39 @@
             const productGrid = document.getElementById('productGrid');
             productGrid.innerHTML = '';
 
-            products.forEach(product => {
+            products.forEach((product, index) => {
                 const productCard = document.createElement('div');
-                productCard.className = 'product-card';
+                productCard.className = 'product-card reveal';
+                productCard.style.transitionDelay = `${index * 0.1}s`;
+                // Add vanilla tilt attribute for 3D effect
+                productCard.setAttribute('data-tilt', '');
+                productCard.setAttribute('data-tilt-max', '10');
+                productCard.setAttribute('data-tilt-speed', '400');
+                productCard.setAttribute('data-tilt-glare', 'true');
+                productCard.setAttribute('data-tilt-max-glare', '0.2');
+
                 productCard.innerHTML = `
-                    <div class="product-image" style="background-image: url('${product.image}')"></div>
+                    <div class="product-image-container">
+                        <div class="product-image" style="background-image: url('${product.image}')"></div>
+                    </div>
                     <div class="product-info">
                         <h3 class="product-name">${product.name}</h3>
                         <p class="product-price">$${product.price.toFixed(2)}</p>
                         <p class="product-description">${product.description}</p>
-                        <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Cart</button>
+                        <div class="product-action-buttons">
+                            <button class="add-to-cart" onclick="addToCart(${product.id})">Add to Bag</button>
+                            <a href="https://wa.me/917388400233?text=Hi,%20I%20would%20like%20to%20order%20${encodeURIComponent(product.name)}" target="_blank" class="whatsapp-order-btn">
+                                <i class="fab fa-whatsapp"></i> WhatsApp
+                            </a>
+                        </div>
                     </div>
                 `;
                 productGrid.appendChild(productCard);
+                revealObserver.observe(productCard);
             });
+
+            // Initialize VanillaTilt after DOM insertion
+            VanillaTilt.init(document.querySelectorAll(".product-card"));
         }
 
         // Add to cart
@@ -1033,19 +1711,19 @@
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    image: product.image,
-                    quantity: 1
-                });
+                cart.push({ ...product, quantity: 1 });
             }
 
             saveCart();
             updateCartCount();
             updateCartDisplay();
-            showNotification(`${product.name} added to cart!`);
+            showNotification(`${product.name} added to your bag`);
+
+            // Open cart automatically
+            const cartModal = document.getElementById('cartModal');
+            if (!cartModal.classList.contains('show')) {
+                toggleCart();
+            }
         }
 
         // Update cart count
@@ -1053,6 +1731,10 @@
             const cartCount = document.getElementById('cartCount');
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.textContent = totalItems;
+
+            // Pop animation
+            cartCount.style.transform = 'scale(1.5)';
+            setTimeout(() => { cartCount.style.transform = 'scale(1)'; }, 200);
         }
 
         // Update cart display
@@ -1061,7 +1743,7 @@
             const cartTotal = document.getElementById('cartTotal');
 
             if (cart.length === 0) {
-                cartItems.innerHTML = '<p>Your cart is empty</p>';
+                cartItems.innerHTML = '<p style="color: var(--text-muted); text-align: center; margin: 2rem 0;">Your bag is currently empty.</p>';
                 cartTotal.textContent = '0.00';
                 return;
             }
@@ -1079,9 +1761,9 @@
                         <div class="cart-item-name">${item.name}</div>
                         <div class="cart-item-price">$${item.price.toFixed(2)}</div>
                         <div class="cart-item-quantity">
-                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
-                            <span>${item.quantity}</span>
-                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, -1)"><i class="fas fa-minus" style="font-size: 0.7rem;"></i></button>
+                            <span style="font-weight: 500;">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="changeQuantity(${item.id}, 1)"><i class="fas fa-plus" style="font-size: 0.7rem;"></i></button>
                             <span class="remove-item" onclick="removeFromCart(${item.id})">Remove</span>
                         </div>
                     </div>
@@ -1123,38 +1805,39 @@
         // Toggle cart modal
         function toggleCart() {
             const cartModal = document.getElementById('cartModal');
-            cartModal.style.display = cartModal.style.display === 'block' ? 'none' : 'block';
+            if (cartModal.classList.contains('show')) {
+                cartModal.classList.remove('show');
+                setTimeout(() => { cartModal.style.display = 'none'; }, 300);
+            } else {
+                cartModal.style.display = 'block';
+                // Small delay to allow display:block to apply before adding class for transition
+                setTimeout(() => { cartModal.classList.add('show'); }, 10);
+            }
         }
 
         // Checkout
         function checkout() {
             if (cart.length === 0) {
-                alert('Your cart is empty!');
+                showNotification('Your bag is empty!');
                 return;
             }
-            showAddressModal();
+            toggleCart(); // Close cart
+            setTimeout(() => {
+                document.getElementById('addressModal').classList.add('show');
+            }, 300);
         }
 
-        // Global variable to store customer address
         let customerAddress = {};
 
-        // Show address modal
-        function showAddressModal() {
-            const addressModal = document.getElementById('addressModal');
-            addressModal.style.display = 'block';
-        }
-
-        // Close address modal
+        // Modals Logic
         function closeAddressModal() {
-            document.getElementById('addressModal').style.display = 'none';
-            document.getElementById('addressForm').reset();
+            document.getElementById('addressModal').classList.remove('show');
+            toggleCart(); // Open cart back up
         }
 
-        // Handle address form submission
-        document.getElementById('addressForm').addEventListener('submit', function(e) {
+        document.getElementById('addressForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            
-            // Collect address data
+
             customerAddress = {
                 fullName: document.getElementById('fullName').value,
                 phone: document.getElementById('phone').value,
@@ -1162,262 +1845,172 @@
                 streetAddress: document.getElementById('streetAddress').value,
                 city: document.getElementById('city').value,
                 state: document.getElementById('state').value,
-                zipCode: document.getElementById('zipCode').value,
-                deliveryInstructions: document.getElementById('deliveryInstructions').value
+                zipCode: document.getElementById('zipCode').value
             };
 
-            // Validate address
-            if (!validateAddress(customerAddress)) {
-                return;
-            }
+            document.getElementById('addressModal').classList.remove('show');
 
-            // Close address modal and show payment modal
-            closeAddressModal();
-            showPaymentModal();
-        });
-
-        // Validate address
-        function validateAddress(address) {
-            if (!address.fullName.trim()) {
-                alert('Please enter your full name');
-                return false;
-            }
-            if (!address.phone.trim()) {
-                alert('Please enter your phone number');
-                return false;
-            }
-            if (!address.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(address.email)) {
-                alert('Please enter a valid email address');
-                return false;
-            }
-            if (!address.streetAddress.trim()) {
-                alert('Please enter your street address');
-                return false;
-            }
-            if (!address.city.trim()) {
-                alert('Please enter your city');
-                return false;
-            }
-            if (!address.state.trim()) {
-                alert('Please enter your state');
-                return false;
-            }
-            if (!address.zipCode.trim()) {
-                alert('Please enter your ZIP code');
-                return false;
-            }
-            return true;
-        }
-
-        // Show payment modal
-        function showPaymentModal() {
-            const paymentModal = document.getElementById('paymentModal');
+            // Populate Payment Summary
             const paymentOrderItems = document.getElementById('paymentOrderItems');
-            const paymentTotal = document.getElementById('paymentTotal');
-
-            // Display order items
             paymentOrderItems.innerHTML = '';
             let total = 0;
-
             cart.forEach(item => {
                 total += item.price * item.quantity;
-                const orderItem = document.createElement('div');
-                orderItem.style.cssText = 'display: flex; justify-content: space-between; margin-bottom: 0.5rem;';
-                orderItem.innerHTML = `
-                    <span>${item.name} x${item.quantity}</span>
-                    <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                paymentOrderItems.innerHTML += `
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                        <span>${item.name} <span style="color: var(--text-muted);">x${item.quantity}</span></span>
+                        <span style="font-weight: 500;">$${(item.price * item.quantity).toFixed(2)}</span>
+                    </div>
                 `;
-                paymentOrderItems.appendChild(orderItem);
             });
+            document.getElementById('paymentTotal').textContent = total.toFixed(2);
 
-            // Add delivery info
-            const deliveryInfo = document.createElement('div');
-            deliveryInfo.style.cssText = 'margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #eee; font-size: 0.9rem; color: #666;';
-            deliveryInfo.innerHTML = `
-                <div><strong>Delivery to:</strong> ${customerAddress.fullName}</div>
-                <div>${customerAddress.streetAddress}, ${customerAddress.city}, ${customerAddress.state} ${customerAddress.zipCode}</div>
-                <div><strong>Phone:</strong> ${customerAddress.phone}</div>
-            `;
-            paymentOrderItems.appendChild(deliveryInfo);
-
-            paymentTotal.textContent = total.toFixed(2);
-            paymentModal.style.display = 'block';
-        }
-
-        // Close payment modal
-        function closePaymentModal() {
-            document.getElementById('paymentModal').style.display = 'none';
-            document.getElementById('paymentForm').reset();
-        }
-
-        // Handle payment form submission
-        document.getElementById('paymentForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Get form data
-            const formData = {
-                cardName: document.getElementById('cardName').value,
-                cardNumber: document.getElementById('cardNumber').value,
-                expiryDate: document.getElementById('expiryDate').value,
-                cvv: document.getElementById('cvv').value,
-                billingAddress: document.getElementById('billingAddress').value,
-                paymentMethod: document.getElementById('paymentMethod').value
-            };
-
-            // Basic validation
-            if (!validatePaymentForm(formData)) {
-                return;
-            }
-
-            // Simulate payment processing
-            processPayment(formData);
+            setTimeout(() => {
+                document.getElementById('paymentModal').classList.add('show');
+            }, 300);
         });
 
-        // Validate payment form
-        function validatePaymentForm(data) {
-            if (!data.cardName.trim()) {
-                alert('Please enter cardholder name');
-                return false;
-            }
-            
-            const cardNumber = data.cardNumber.replace(/\s/g, '');
-            if (!/^\d{13,19}$/.test(cardNumber)) {
-                alert('Please enter a valid card number');
-                return false;
-            }
-            
-            if (!/^\d{2}\/\d{2}$/.test(data.expiryDate)) {
-                alert('Please enter expiry date in MM/YY format');
-                return false;
-            }
-            
-            if (!/^\d{3,4}$/.test(data.cvv)) {
-                alert('Please enter a valid CVV');
-                return false;
-            }
-            
-            if (!data.billingAddress.trim()) {
-                alert('Please enter billing address');
-                return false;
-            }
-            
-            if (!data.paymentMethod) {
-                alert('Please select a payment method');
-                return false;
-            }
-            
-            return true;
+        function closePaymentModal() {
+            document.getElementById('paymentModal').classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('addressModal').classList.add('show');
+            }, 300);
         }
 
-        // Process payment
-        function processPayment(formData) {
-            // Show processing message
-            const payBtn = document.querySelector('.pay-btn');
+        document.getElementById('paymentForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const payBtn = document.getElementById('payBtn');
             const originalText = payBtn.textContent;
             payBtn.textContent = 'Processing...';
             payBtn.disabled = true;
 
-            // Simulate payment processing delay
             setTimeout(() => {
-                // Simulate successful payment (90% success rate)
-                const success = Math.random() > 0.1;
-                
-                if (success) {
-                    // Payment successful
-                    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-                    const orderNumber = 'ORD-' + Date.now();
-                    
-                    alert(`✅ Payment Successful!\n\nOrder Number: ${orderNumber}\nTotal Paid: $${total.toFixed(2)}\n\nDelivery Address:\n${customerAddress.fullName}\n${customerAddress.streetAddress}\n${customerAddress.city}, ${customerAddress.state} ${customerAddress.zipCode}\nPhone: ${customerAddress.phone}\n\nThank you for your purchase! You will receive a confirmation email shortly.`);
-                    
-                    // Clear cart and address
-                    cart = [];
-                    customerAddress = {};
-                    saveCart();
-                    updateCartCount();
-                    updateCartDisplay();
-                    
-                    // Close modals
-                    closePaymentModal();
-                    toggleCart();
-                } else {
-                    // Payment failed
-                    alert('❌ Payment Failed\n\nPlease check your card details and try again.');
-                }
-                
-                // Reset button
+                // Success
+                document.getElementById('paymentModal').classList.remove('show');
+                cart = [];
+                saveCart();
+                updateCartCount();
+                updateCartDisplay();
+                document.getElementById('paymentForm').reset();
+                document.getElementById('addressForm').reset();
                 payBtn.textContent = originalText;
                 payBtn.disabled = false;
-            }, 2000);
-        }
 
-        // Format card number input
-        document.getElementById('cardNumber').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\s/g, '');
-            value = value.replace(/\D/g, '');
+                // Show custom success message
+                showNotification('✅ Payment Successful! Thank you for your order.');
+            }, 1500);
+        });
+
+        // Format inputs
+        document.getElementById('cardNumber').addEventListener('input', function (e) {
+            let value = e.target.value.replace(/\s/g, '').replace(/\D/g, '');
             value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
             e.target.value = value.trim();
         });
 
-        // Format expiry date input
-        document.getElementById('expiryDate').addEventListener('input', function(e) {
+        document.getElementById('expiryDate').addEventListener('input', function (e) {
             let value = e.target.value.replace(/\D/g, '');
-            if (value.length >= 2) {
-                value = value.slice(0, 2) + '/' + value.slice(2, 4);
-            }
+            if (value.length >= 2) value = value.slice(0, 2) + '/' + value.slice(2, 4);
             e.target.value = value;
         });
 
-        // Show notification
+        // Notifications
         function showNotification(message) {
-            // Create notification element
             const notification = document.createElement('div');
-            notification.textContent = message;
+            notification.innerHTML = `<i class="fas fa-check-circle" style="margin-right: 10px;"></i> ${message}`;
             notification.style.cssText = `
                 position: fixed;
-                top: 100px;
-                right: 20px;
-                background: #8B4513;
-                color: white;
-                padding: 15px 20px;
-                border-radius: 5px;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%) translateY(100px);
+                background: var(--secondary);
+                color: var(--white);
+                padding: 15px 25px;
+                border-radius: 30px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
                 z-index: 3000;
-                animation: slideInNotification 0.3s ease;
+                transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                font-size: 0.95rem;
+                display: flex;
+                align-items: center;
             `;
 
             document.body.appendChild(notification);
 
-            // Remove notification after 3 seconds
+            // Trigger animation
+            setTimeout(() => { notification.style.transform = 'translateX(-50%) translateY(0)'; }, 10);
+
             setTimeout(() => {
-                notification.style.animation = 'slideOutNotification 0.3s ease';
-                setTimeout(() => {
-                    document.body.removeChild(notification);
-                }, 300);
+                notification.style.transform = 'translateX(-50%) translateY(100px)';
+                setTimeout(() => document.body.removeChild(notification), 400);
             }, 3000);
         }
 
-        // Close cart when clicking outside
-        document.getElementById('cartModal').addEventListener('click', function(e) {
+        // Close modals when clicking outside
+        document.querySelectorAll('.modal-overlay').forEach(modal => {
+            modal.addEventListener('click', function (e) {
+                if (e.target === this) {
+                    if (this.id === 'addressModal') closeAddressModal();
+                    if (this.id === 'paymentModal') closePaymentModal();
+                }
+            });
+        });
+
+        document.getElementById('cartModal').addEventListener('click', function (e) {
             if (e.target === this) {
                 toggleCart();
             }
         });
 
-        // Close payment modal when clicking outside
-        document.getElementById('paymentModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePaymentModal();
-            }
+        // 3D Model Scroll Rotation
+        const modelTop = document.getElementById('modelTop');
+        const modelBottom = document.getElementById('modelBottom');
+        
+        let userOffsetTop = 0;
+        let userOffsetBottom = 0;
+        let currentPhiTop = '75deg';
+        let currentPhiBottom = '75deg';
+
+        function updateOffsets(model, isTop) {
+            model.addEventListener('camera-change', (e) => {
+                if (e.detail.source === 'user-interaction') {
+                    const orbit = model.getCameraOrbit();
+                    const currentTheta = orbit.theta * (180 / Math.PI);
+                    
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                    const scrollPercent = scrollHeight > 0 ? scrollTop / scrollHeight : 0;
+                    
+                    const baseAngle = isTop ? scrollPercent * 720 : -(scrollPercent * 720);
+                    
+                    if (isTop) {
+                        userOffsetTop = currentTheta - baseAngle;
+                        currentPhiTop = orbit.phi + 'rad';
+                    } else {
+                        userOffsetBottom = currentTheta - baseAngle;
+                        currentPhiBottom = orbit.phi + 'rad';
+                    }
+                }
+            });
+        }
+        
+        if (modelTop) updateOffsets(modelTop, true);
+        if (modelBottom) updateOffsets(modelBottom, false);
+
+        window.addEventListener('scroll', () => {
+            if (!modelTop || !modelBottom) return;
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            if (scrollHeight <= 0) return;
+            const scrollPercent = scrollTop / scrollHeight;
+
+            const angle = scrollPercent * 720;
+
+            modelTop.setAttribute('camera-orbit', `${angle + userOffsetTop}deg ${currentPhiTop} auto`);
+            modelBottom.setAttribute('camera-orbit', `${-angle + userOffsetBottom}deg ${currentPhiBottom} auto`);
         });
 
-        // Close address modal when clicking outside
-        document.getElementById('addressModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeAddressModal();
-            }
-        });
-
-        // Smooth scrolling for navigation
+        // Smooth scrolling
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -1431,17 +2024,6 @@
             });
         });
     </script>
-
-    <style>
-        @keyframes slideInNotification {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideOutNotification {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(100%); opacity: 0; }
-        }
-    </style>
 </body>
+
 </html>

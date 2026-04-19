@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes, maximum-scale=5.0">
+<meta name="theme-color" content="#ff0000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>multitasker</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -20,6 +23,10 @@ body{
   min-height: 100vh;
   overflow-x: hidden;
   position: relative;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body::before {
@@ -190,6 +197,9 @@ button,input,select,textarea{
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  min-height: 44px;
+  min-width: 44px;
+  touch-action: manipulation;
 }
 
 button::before {
@@ -330,9 +340,218 @@ iframe:hover {
 @media (max-width: 768px) {
   .container {
     grid-template-columns: 1fr;
+    padding: 15px;
   }
+  
   h1 {
     font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .box {
+    padding: 20px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+  }
+
+  button,input,select,textarea {
+    padding: 10px 15px;
+    margin: 6px;
+    font-size: 14px;
+    min-height: 40px;
+  }
+
+  iframe {
+    height: 200px;
+  }
+
+  #clock {
+    font-size: 1.5rem;
+  }
+
+  #timerDisplay {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  .container {
+    grid-template-columns: 1fr;
+    padding: 10px;
+    gap: 10px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+
+  h2 {
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+
+  h3 {
+    font-size: 0.9rem;
+  }
+
+  .box {
+    padding: 15px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(255, 0, 0, 0.15);
+  }
+
+  button,input,select,textarea {
+    padding: 10px 12px;
+    margin: 5px;
+    font-size: 14px;
+    width: calc(100% - 10px);
+    min-height: 40px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: auto;
+    display: inline-block;
+    min-width: 44px;
+  }
+
+  input[type="number"],
+  input[type="text"],
+  input[type="color"],
+  select,
+  textarea {
+    width: 100%;
+  }
+
+  select {
+    margin: 5px 0;
+  }
+
+  textarea {
+    width: 100%;
+    min-height: 80px;
+  }
+
+  iframe {
+    height: 150px;
+    border-radius: 8px;
+  }
+
+  #clock {
+    font-size: 1.3rem;
+    margin: 5px;
+  }
+
+  #timerDisplay {
+    font-size: 1.5rem;
+    margin: 10px 0;
+  }
+
+  #timerInput {
+    width: 100%;
+  }
+
+  #scrollToTop {
+    bottom: 15px;
+    right: 15px;
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+  }
+
+  /* Improved touch targets */
+  label {
+    display: inline-block;
+    padding: 8px;
+    margin: 8px 5px;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  label input[type="checkbox"] {
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  /* Text input should be 16px on mobile to prevent zoom */
+  input:not([type="checkbox"]):not([type="color"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Disable animations on smaller devices for better performance */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@media (max-width: 360px) {
+  .container {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  h2 {
+    font-size: 0.9rem;
+  }
+
+  .box {
+    padding: 12px;
+  }
+
+  button,input,select,textarea {
+    padding: 9px 10px;
+    margin: 4px;
+    font-size: 13px;
+  }
+}
+
+/* Touch device specific optimizations */
+@media (hover: none) and (pointer: coarse) {
+  button:active {
+    transform: scale(0.98);
+  }
+
+  .box:hover::before {
+    left: -100%;
+  }
+
+  .box:hover {
+    transform: none;
+    box-shadow: 0 4px 20px rgba(255, 0, 0, 0.2);
+  }
+
+  /* Remove hover effects */
+  button:hover {
+    transform: none;
+  }
+
+  iframe:hover {
+    transform: none;
   }
 }
 </style>
